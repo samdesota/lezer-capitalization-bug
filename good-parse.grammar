@@ -1,0 +1,23 @@
+
+@top Atom { Text | Element }
+
+Element { tag-name element-attributes? }
+
+element-attributes { "[" element-attribute "]" }
+
+element-attribute { tag-name }
+
+Text { string }
+
+@tokens {
+  tag-name { $[a-z0-9#\-\.]+ '+'? }
+
+  string { '"' char* '"' }
+  char { $[\u{20}\u{21}\u{23}-\u{5b}\u{5d}-\u{10ffff}] | "\\" esc }
+  esc  { $["\\\/bfnrt] | "u" hex hex hex hex }
+  hex  { $[0-9a-fA-F] }
+
+  ws { $[ \n\r\t] }
+}
+
+@detectDelim
